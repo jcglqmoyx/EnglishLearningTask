@@ -40,11 +40,6 @@ class ReportView(APIView):
             if username not in competent_members and username not in incompetent_members:
                 incompetent_members[username] = []
         generate_report(competent_members, incompetent_members)
-        print()
-        print(competent_members)
-        print()
-        print(incompetent_members)
-        print()
         return Response({
             'result': "success",
         })
