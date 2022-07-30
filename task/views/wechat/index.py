@@ -84,7 +84,7 @@ class WechatView(APIView):
                             links += '<a href=\'%s\'>链接%d</a>  ' % (records[i].image_url, count_yesterday_record)
 
                     content = '<a href=\'%s\'>图片</a>已上传。  ' \
-                              '你昨天天已经向公众号发送了%d张图片(包括补卡图片）, %d张图片的链接分别为: %s。 ' \
+                              '你昨天已经向公众号发送了%d张图片(包括补卡图片）, %d张图片的链接分别为: %s。 ' \
                               '今天查卡的时候只会检查最后两张图片，如果最后两张图片不符合要求，请重新补卡' \
                               % (pic_url, count_yesterday_record, count_yesterday_record, links)
                     response['Content'] = content
@@ -94,7 +94,7 @@ class WechatView(APIView):
                         member=member,
                         time=now(),
                         image_url=pic_url,
-                        is_submitted_later=True
+                        is_submitted_later=False
                     )
                     records = Record.objects.all().filter(member=member).order_by('-time')[:10]
                     links, count_today_record = '', 0
