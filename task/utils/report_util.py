@@ -1,7 +1,7 @@
 from task.utils.datetime_util import get_date_str
 
 
-def generate_report(competent_members, incompetent_members):
+def generate_report(group_id, successful_members, rest_for_one_day_members, rest_for_two_days_members, failed_members):
     def output_records(members):
         s = ''
         for member, records in members.items():
@@ -15,12 +15,26 @@ def generate_report(competent_members, incompetent_members):
         return s
 
     date_str = get_date_str()
-    f = open('./%s.md' % date_str, 'w')
-    f.write('# %s打卡情况\n' % date_str)
+    group_id_str = str(group_id)
+    while len(group_id_str) < 4:
+        group_id_str = '0' + group_id_str
+    f = open('./task/templates/markdown/%s_%s.md' % (date_str, group_id_str), 'w')
+    f.write('# %s %d群 打卡情况\n' % (date_str, group_id))
+
     f.write('## 完成打卡的朋友\n')
-    if competent_members:
-        f.write(output_records(competent_members))
-    f.write('## 未完成打卡的朋友\n')
-    if incompetent_members:
-        f.write(output_records(incompetent_members))
+    if successful_members:
+        f.write(output_records(successful_members))
+
+    if rest_for_one_day_members:
+        f.write('## 选择休息一天的朋友\n')
+        f.write(output_records(rest_for_one_day_members))
+
+    if rest_for_two_days_members:
+        f.write('## 选择休息两天的朋友\n')
+        f.write(output_records(rest_for_two_days_members))
+
+    if failed_members:
+        f.write('## 未完成打卡的朋友\n')
+        f.write(output_records(failed_members))
+
     f.close()
