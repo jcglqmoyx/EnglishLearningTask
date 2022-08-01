@@ -1,0 +1,4 @@
+Django==4.0.6
+djangorestframework==3.13.1
+djangorestframework_simplejwt==5.2.0
+xmltodict==0.13.0
