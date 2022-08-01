@@ -3,7 +3,7 @@ from task.models.member import Member
 
 
 class Record(models.Model):
-    record_id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     time = models.DateTimeField()
     image_url = models.URLField(max_length=512)

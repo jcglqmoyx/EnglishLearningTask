@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from task.views.info.member.member import MemberView
-from task.views.info.record.records import RecordView
+from task.views.info.record.record import RecordView
 from task.views.settings.register import RegisterView
 from task.views.wechat.index import WechatView
 from task.views.info.record.report import ReportView
