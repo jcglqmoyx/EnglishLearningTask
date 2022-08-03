@@ -5,11 +5,13 @@ from datetime import timedelta
 import xmltodict
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.db.models import Max
 from django.shortcuts import HttpResponse
 from django.utils.timezone import now
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from task.models.group import Group
 from task.models.member import Member
 from task.models.record import Record
 
@@ -63,10 +65,11 @@ class WechatView(APIView):
                 if Member.objects.filter(username=username).exists():
                     response['Content'] = '用户名已存在'
                 else:
+                    group = Group.objects.all().aggregate(Max('id'))
                     user = User(username=username)
                     user.set_password(wechat_id)
                     user.save()
-                    Member.objects.create(user=user, wechat_id=wechat_id, group_id=1).save()
+                    Member.objects.create(user=user, wechat_id=wechat_id, group=group).save()
                     response['Content'] = '注册成功。你的用户名为: %s, 请联系管理员激活账号' % username
             else:
                 response['Content'] = '尚未注册'
