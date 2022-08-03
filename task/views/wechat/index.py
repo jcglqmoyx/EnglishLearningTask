@@ -58,7 +58,7 @@ class WechatView(APIView):
             elif content == 'm':
                 cache.set(wechat_id, True, 20)
                 response['Content'] = '开始补卡, 请在20秒内上传昨天的打卡图片..'
-            elif content[:1] == 'r ' and len(content) > 2:
+            elif content[:2] == 'r ' and len(content) > 2:
                 username = content[2:]
                 if Member.objects.filter(username=username).exists():
                     response['Content'] = '用户名已存在'
