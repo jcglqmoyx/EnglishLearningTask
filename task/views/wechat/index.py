@@ -51,41 +51,40 @@ class WechatView(APIView):
             "CreateTime": int(time.time()),
             "MsgType": "text",
         }
-        member = Member.objects.filter(wechat_id=wechat_id).first()
-        if not member:
-            response['Content'] = '尚未注册'
-        elif not member.is_active:
-            response['Content'] = '账号尚未激活'
-        else:
-            if message_type == 'text':
-                content = data['Content']
-                if content == 'p':
-                    response['Content'] = wechat_id
-                    cache.set(wechat_id + '_register', True, 3600)
-                # 补卡
-                elif content == 'm':
-                    cache.set(wechat_id, True, 20)
-                    response['Content'] = '开始补卡, 请在20秒内上传昨天的打卡图片..'
-                elif content[:2] == 'r ' and len(content) > 2:
-                    username = content[2:]
-                    if Member.objects.filter(wechat_id=wechat_id).exists():
-                        response['Content'] = '你已经注册过了, 你的用户名为%s, 请不要重复注册' % Member.objects.get(
-                            wechat_id=wechat_id).user.username
-                    if User.objects.filter(username=username).exists():
-                        response['Content'] = '用户名已存在, 请换一个用户名'
-                    else:
-                        group = Group.objects.all().aggregate(Max('id'))
-                        user = User(username=username)
-                        user.set_password(wechat_id)
-                        user.save()
-                        Member.objects.create(user=user, wechat_id=wechat_id, group=group).save()
-                        response['Content'] = '注册成功。你的用户名为: %s, 请联系管理员激活账号' % username
+        if message_type == 'text':
+            content = data['Content']
+            if content == 'p':
+                response['Content'] = wechat_id
+                cache.set(wechat_id + '_register', True, 3600)
+            # 补卡
+            elif content == 'm':
+                cache.set(wechat_id, True, 20)
+                response['Content'] = '开始补卡, 请在20秒内上传昨天的打卡图片..'
+            elif content[:2] == 'r ' and len(content) > 2:
+                username = content[2:]
+                if Member.objects.filter(wechat_id=wechat_id).exists():
+                    response['Content'] = '你已经注册过了, 你的用户名为%s, 请不要重复注册' % Member.objects.get(
+                        wechat_id=wechat_id).user.username
+                elif User.objects.filter(username=username).exists():
+                    response['Content'] = '用户名已存在, 请换一个用户名'
                 else:
-                    response['Content'] = '欢迎使用打卡系统, 请输入"r 用户名"开始注册, 注册成功后，请联系管理员激活账号'
+                    group = Group.objects.all().aggregate(Max('id'))
+                    user = User(username=username)
+                    user.set_password(wechat_id)
+                    user.save()
+                    Member.objects.create(user=user, wechat_id=wechat_id, group=group).save()
+                    response['Content'] = '注册成功。你的用户名为: %s, 请联系管理员激活账号' % username
+            else:
+                response['Content'] = '欢迎使用打卡系统, 请输入"r 用户名"开始注册, 注册成功后，请联系管理员激活账号'
 
-            elif message_type == 'image':
+        elif message_type == 'image':
+            member = Member.objects.filter(wechat_id=wechat_id).first()
+            if not member:
+                response['Content'] = '尚未注册'
+            elif not member.is_active:
+                response['Content'] = '账号尚未激活'
+            else:
                 pic_url = data['PicUrl']
-                member = Member.objects.filter(wechat_id=wechat_id).first()
                 # 补卡
                 if cache.get(wechat_id):
                     cache.delete_many(wechat_id)
