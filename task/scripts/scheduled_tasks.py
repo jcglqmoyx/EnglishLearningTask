@@ -37,8 +37,8 @@ def update_github_page():
     file.write('# %s 打卡情况\n' % yesterday_date_str)
 
     group_count = requests.get('http://127.0.0.1:8000/task/info/group/count').json()['group_count']
-    for group_id in group_count:
-        file.write('![%d群](%s_%d.md)' % (group_id + 1, yesterday_date_str, group_id + 1))
+    for group_id in range(1, group_count + 1):
+        file.write('![%d群](%s_%d.md)' % (group_id, yesterday_date_str, group_id))
         file.write('\n')
         file.write('<br>')
     file.close()
