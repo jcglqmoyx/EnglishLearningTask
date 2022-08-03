@@ -11,8 +11,7 @@ def get_token():
 
 
 def get_report():
-    res = requests.get('http://127.0.0.1:8000/task/info/report', headers={'Authorization': 'Bearer ' + get_token()})
-    print('get report', res.text)
+    requests.get('http://127.0.0.1:8000/task/info/report', headers={'Authorization': 'Bearer ' + get_token()})
 
 
 if __name__ == '__main__':

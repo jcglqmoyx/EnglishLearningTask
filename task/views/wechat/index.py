@@ -68,9 +68,7 @@ class WechatView(APIView):
             else:
                 # 补卡
                 if cache.get(wechat_id):
-                    print(cache.get(wechat_id), '补卡')
                     cache.delete_many(wechat_id)
-                    print(cache.get(wechat_id), '补卡')
                     Record.objects.create(
                         member=member,
                         time=now() - timedelta(days=1),
