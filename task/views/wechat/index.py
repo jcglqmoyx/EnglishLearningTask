@@ -62,8 +62,11 @@ class WechatView(APIView):
                 response['Content'] = '开始补卡, 请在20秒内上传昨天的打卡图片..'
             elif content[:2] == 'r ' and len(content) > 2:
                 username = content[2:]
+                if Member.objects.filter(wechat_id=wechat_id).exists():
+                    response['Content'] = '你已经注册过了, 你的用户名为%s, 请不要重复注册' % Member.objects.get(
+                        wechat_id=wechat_id).username
                 if User.objects.filter(username=username).exists():
-                    response['Content'] = '用户名已存在'
+                    response['Content'] = '用户名已存在, 请换一个用户名'
                 else:
                     group = Group.objects.all().aggregate(Max('id'))
                     user = User(username=username)
