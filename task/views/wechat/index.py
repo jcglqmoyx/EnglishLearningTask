@@ -68,6 +68,8 @@ class WechatView(APIView):
                     user.save()
                     Member.objects.create(user=user, wechat_id=wechat_id, group_id=1).save()
                     response['Content'] = '注册成功。你的用户名为: %s, 请联系管理员激活账号' % username
+            else:
+                response['Content'] = '尚未注册'
 
         elif message_type == 'image':
             pic_url = data['PicUrl']
