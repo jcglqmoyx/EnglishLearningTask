@@ -11,6 +11,7 @@ def generate_report(group_id, successful_members, rest_for_one_day_members, rest
             s += '%s ' % member
             for i in range(len(records)):
                 s += '[链接%d](%s) ' % (i + 1, records[i].image_url)
+            s += '<br>'
         s += '\n'
         return s
 
