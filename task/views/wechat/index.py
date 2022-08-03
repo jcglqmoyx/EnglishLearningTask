@@ -71,7 +71,7 @@ class WechatView(APIView):
 
         elif message_type == 'image':
             pic_url = data['PicUrl']
-            member = Member.objects.get(wechat_id=wechat_id)
+            member = Member.objects.filter(wechat_id=wechat_id).first()
             if not member:
                 response['Content'] = '尚未注册'
             elif not member.is_active:
