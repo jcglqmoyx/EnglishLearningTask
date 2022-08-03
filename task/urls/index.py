@@ -9,6 +9,7 @@ from task.views.info.record.record import RecordView
 from task.views.settings.register import RegisterView
 from task.views.wechat.index import WechatView
 from task.views.info.record.report import ReportView
+from task.views.info.group.group_count import GroupCountView
 
 urlpatterns = [
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -21,5 +22,7 @@ urlpatterns = [
     path('info/member/', MemberView.as_view(), name='get_member_info'),
 
     path('info/record/', RecordView.as_view(), name='get_latest_records'),
-    path('info/report/', ReportView.as_view(), name='generate_report')
+    path('info/report/', ReportView.as_view(), name='generate_report'),
+
+    path('info/group/count/', GroupCountView.as_view(), name='get_group_count'),
 ]

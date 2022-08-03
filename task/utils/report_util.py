@@ -15,10 +15,7 @@ def generate_report(group_id, successful_members, rest_for_one_day_members, rest
         return s
 
     date_str = get_date_str()
-    group_id_str = str(group_id)
-    while len(group_id_str) < 4:
-        group_id_str = '0' + group_id_str
-    f = open('./task/templates/markdown/%s_%s.md' % (date_str, group_id_str), 'w')
+    f = open('./task/templates/markdown/%s_%d.md' % (date_str, group_id), 'w')
     f.write('# %s %d群 打卡情况\n' % (date_str, group_id))
 
     f.write('## 完成打卡的朋友\n')
