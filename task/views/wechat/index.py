@@ -5,7 +5,6 @@ from datetime import timedelta
 import xmltodict
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.db.models import Max
 from django.shortcuts import HttpResponse
 from django.utils.timezone import now
 from rest_framework.response import Response
@@ -68,7 +67,7 @@ class WechatView(APIView):
                 elif User.objects.filter(username=username).exists():
                     response['Content'] = '用户名已存在, 请换一个用户名'
                 else:
-                    group = Group.objects.all().aggregate(Max('id'))
+                    group = Group.objects.all().order_by('-id').first()
                     user = User(username=username)
                     user.set_password(wechat_id)
                     user.save()
