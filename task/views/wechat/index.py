@@ -86,7 +86,7 @@ class WechatView(APIView):
                 pic_url = data['PicUrl']
                 # 补卡
                 if cache.get(wechat_id):
-                    cache.delete_many(wechat_id)
+                    cache.delete(wechat_id)
                     Record.objects.create(
                         member=member,
                         time=now() - timedelta(days=1),
