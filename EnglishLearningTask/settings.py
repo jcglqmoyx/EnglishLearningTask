@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_crontab',
     # 'djcelery',
 
     'django.contrib.admin',
@@ -180,3 +181,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = '*'
 CSRF_TRUSTED_ORIGINS = ['http://huanhuacf.top']
+
+CRONJOBS = [
+    ('0 21 * * *', 'task.scripts.scheduled_tasks.update_github_page')
+]
